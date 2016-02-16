@@ -8,7 +8,7 @@
     <!-- 依赖项定义 -->
     <dependencies>
         <dependency>
-            <groupId>com.sls</groupId>
+            <groupId>com.sls.core</groupId>
             <artifactId>sls-core</artifactId>
         </dependency>
 
@@ -58,13 +58,6 @@
             <artifactId>tomcat-jdbc</artifactId>
         </dependency>
 
-        <!-- jdbc driver -->
-        <dependency>
-            <groupId>${jdbc.driver.groupId}</groupId>
-            <artifactId>${jdbc.driver.artifactId}</artifactId>
-            <version>${jdbc.driver.version}</version>
-            <scope>runtime</scope>
-        </dependency>
         <!-- PERSISTENCE end -->
 
         <!-- WEB begin -->

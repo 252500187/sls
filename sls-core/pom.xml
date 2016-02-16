@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>sls-core</artifactId>
+    <groupId>com.sls.core</groupId>
     <packaging>jar</packaging>
     <name>sls-core</name>
 
@@ -47,14 +48,6 @@
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
-        </dependency>
-
-        <!-- jdbc driver -->
-        <dependency>
-            <groupId>${jdbc.driver.groupId}</groupId>
-            <artifactId>${jdbc.driver.artifactId}</artifactId>
-            <version>${jdbc.driver.version}</version>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- connection pool -->
@@ -103,11 +96,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.sls</groupId>
-            <artifactId>sls-test-util</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>net.sourceforge.pinyin4j</groupId>
             <artifactId>pinyin4j</artifactId>
         </dependency>
@@ -115,11 +103,6 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.ant</groupId>
-            <artifactId>com.springsource.org.apache.tools.ant</artifactId>
         </dependency>
 
         <dependency>
