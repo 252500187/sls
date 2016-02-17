@@ -25,7 +25,6 @@ public class LabelServiceImpl implements LabelService {
     @Autowired
     private UserDao userDao;
 
-    @Override
     public void getAllUserLabel(HttpServletRequest request) {
         request.setAttribute("labelList", labelDao.getAllUserCanSelectLabels(getUserId()));
     }
@@ -34,7 +33,6 @@ public class LabelServiceImpl implements LabelService {
         return userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
     }
 
-    @Override
     public void editUserLabelList(String myLabelList) {
         int userId = getUserId();
         Label label = new Label();
@@ -50,23 +48,19 @@ public class LabelServiceImpl implements LabelService {
         }
     }
 
-    @Override
     public void getLabelsByLoginUserId(HttpServletRequest request) {
         List<Label> myLabelList = labelDao.getLabelsByUserId(getUserId());
         request.setAttribute("myLabelList", myLabelList.size() == 0 ? new LinkedList<Label>() : myLabelList);
     }
 
-    @Override
     public List<Label> getLabelsByUserId(int userId) {
         return labelDao.getLabelsByUserId(userId);
     }
 
-    @Override
     public void getAllLabel(HttpServletRequest request) {
         request.setAttribute("labelList", labelDao.getAllLabel());
     }
 
-    @Override
     public void editScormLabelList(String scormLabelList, int scormId) {
         if (scormId == DictConstant.VOID_VALUE || scormLabelList.equals("")) {
             return;
@@ -80,33 +74,27 @@ public class LabelServiceImpl implements LabelService {
         }
     }
 
-    @Override
     public Page<Label> getAllLabelPageList(PageParameter pageParameter, Label label) {
         return labelDao.getAllLabelPageList(pageParameter, label);
     }
 
-    @Override
     public boolean checkRepeatLabelName(String labelName, String oldLabelName) {
         Boolean hasLabelName = labelDao.checkRepeatLabelName(labelName);
         return !(hasLabelName && !oldLabelName.equals(labelName));
     }
 
-    @Override
     public void addLabel(Label label) {
         labelDao.addLabel(label);
     }
 
-    @Override
     public void findLabelById(int labelId, HttpServletRequest request) {
         request.setAttribute("label", labelDao.findLabelById(labelId));
     }
 
-    @Override
     public void editLabel(Label label) {
         labelDao.editLabel(label);
     }
 
-    @Override
     public void delLabel(String labelId) {
         labelDao.delLabelByLabelId(labelId);
     }

@@ -17,7 +17,6 @@ public class RoleDaoImpl extends PageDao implements RoleDao {
         return new StringBuilder(roleSql);
     }
 
-    @Override
     public Page<Role> findRolePageList(PageParameter pageParameter, Role role) {
         StringBuilder sql = getRoleSql();
         if (!role.getRoleName().equals("")) {
@@ -26,7 +25,6 @@ public class RoleDaoImpl extends PageDao implements RoleDao {
         return queryForPage(pageParameter, sql.toString(), new BeanPropertySqlParameterSource(role), new BeanPropertyRowMapper<Role>(Role.class));
     }
 
-    @Override
     public Role findRoleByAuthority(String authority) {
         StringBuilder sql = getRoleSql();
         sql.append(" AND authority=?");

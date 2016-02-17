@@ -72,7 +72,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ChangePasswordDao changePasswordDao;
 
-    @Override
     public Page<User> listUserPageList(PageParameter pageParameter, User user) {
         Page<User> userPage = userDao.findUserPageList(pageParameter, user);
         for (User user1 : userPage.getResultList()) {
@@ -82,7 +81,7 @@ public class UserServiceImpl implements UserService {
         return userPage;
     }
 
-    @Override
+
     public User getUserAllInfoById(int id) {
         User user = userDao.findUserAllInfoById(id);
         user.setLevelName(userDao.findUserLevelNameByScore(user.getScore()).getLevelName());
@@ -96,24 +95,24 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Override
+
     public List<User> getUserByLoginName(String loginName) {
         return userDao.findInUseUserByLoginName(loginName);
     }
 
-    @Override
+
     public Boolean checkRepeatLoginName(String loginName, String oldName) {
         Boolean hasLoginName = userDao.checkRepeatLoginName(loginName);
         return !(hasLoginName && !oldName.equals(loginName));
     }
 
-    @Override
+
     public Boolean checkRepeatUserName(String userName, String oldName) {
         Boolean hasLoginName = userDao.checkRepeatUserName(userName);
         return !(hasLoginName && !oldName.equals(userName));
     }
 
-    @Override
+
     public void addUser(User user) {
         user.setInUse(DictConstant.IN_USE);
         user.setRoleId(roleDao.findRoleByAuthority(DictConstant.ROLE_AUTHORITY_USER).getRoleId());
@@ -130,7 +129,7 @@ public class UserServiceImpl implements UserService {
         userRoleDao.addUserRole(userRole);
     }
 
-    @Override
+
     public void editUser(HttpSession session, HttpServletRequest request, User user) {
         User oldUser = userDao.findUserAllInfoById(user.getUserId());
         if (oldUser.getImgUrl().equals(DictConstant.DEFAULT_USER_PHOTO) && oldUser.getUserName().equals(DictConstant.DEFAULT_USER_NAME)) {
@@ -142,7 +141,7 @@ public class UserServiceImpl implements UserService {
         session.setAttribute("userName", user.getUserName());
     }
 
-    @Override
+
     public void upHeadImg(HttpSession session, HttpServletRequest request, String upImg) throws ServletException, IOException {
         if (request.getParameter("haveImg").equals("")) {
             return;
@@ -158,17 +157,17 @@ public class UserServiceImpl implements UserService {
         session.setAttribute("userImg", user.getImgUrl());
     }
 
-    @Override
+
     public Boolean checkRepeatLoginName(String loginName) {
         return !userDao.checkRepeatLoginName(loginName);
     }
 
-    @Override
+
     public Boolean checkRepeatEmail(String email) {
         return !userDao.checkRepeatEmail(email);
     }
 
-    @Override
+
     public void shieldUser(int userId) {
         User user = userDao.findUserAllInfoById(userId);
         if (user.getInUse() == DictConstant.NO_USE) {
@@ -179,7 +178,7 @@ public class UserServiceImpl implements UserService {
         userDao.editUseState(user);
     }
 
-    @Override
+
     public void getUserNextLevelNameByScore(HttpServletRequest request) {
         User user = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0);
         request.setAttribute("user", user);
@@ -193,7 +192,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
+
     public List<Label> getPieCharts(int userId) {
         if (userId == -1) {
             userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
@@ -201,17 +200,17 @@ public class UserServiceImpl implements UserService {
         return userDao.getPieChartsByUserId(userId);
     }
 
-    @Override
+
     public Page<ScormSummarize> getDiscussPageList(PageParameter pageParameter, ScormSummarize scormSummarize) {
         return summarizeDao.findDiscussPageList(pageParameter, scormSummarize);
     }
 
-    @Override
+
     public void shieldDiscuss(int userId, int scormId) {
         summarizeDao.shieldDiscuss(userId, scormId);
     }
 
-    @Override
+
     public void adminIndexStatisticInfo(HttpServletRequest request) {
         //获取所有课件标签饼状图
         List<Label> labels = labelDao.getAllLabel();
@@ -237,7 +236,7 @@ public class UserServiceImpl implements UserService {
         request.setAttribute("scormLevel", scormDao.indexFindTopScormByFieldName("recommend_level", 10));
     }
 
-    @Override
+
     public void getUserOperate(int userInfoId, HttpServletRequest request) {
         Boolean isAttention = true;
         Boolean showAttention = true;
@@ -261,12 +260,12 @@ public class UserServiceImpl implements UserService {
         request.setAttribute("showQuestion", showQuestion);
     }
 
-    @Override
+
     public List<User> getAttentionUserUsersByUserId(int userId) {
         return userAttentionDao.getAttentionUserUsersByUserId(userId);
     }
 
-    @Override
+
     public void userAttentionDeal(int userAttentionId) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         UserAttention userAttention = new UserAttention();
@@ -291,7 +290,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
+
     public void clearAllNewMessage(int attentionUserId, HttpSession session) {
         if (!("").equals(LoginUserUtil.getLoginName())) {
             //清空新消息提示
@@ -308,12 +307,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
+
     public List<UserQuestion> getUserAnsWerQuestionsByUserId(int userId) {
         return userQuestionDao.getUserAnsWerQuestionsByAnswerUserId(userId);
     }
 
-    @Override
+
     public Boolean addUserQuestion(int answerUserId, String questionDescribe) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         //若未关注或有未回答问题则失败
@@ -333,12 +332,12 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    @Override
+
     public List<User> getNumRecommendUsers(int num) {
         return userDao.getUsersOrderByScoreAndNum(num);
     }
 
-    @Override
+
     public void sendUserMessage(BackMessage backMessage) {
         backMessage.setAdminId(userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId());
         backMessage.setDate(DateUtil.getCurrentTimestamp().toString().substring(0, 16));
@@ -346,7 +345,7 @@ public class UserServiceImpl implements UserService {
         backMessageDao.addBackMessage(backMessage);
     }
 
-    @Override
+
     public void sendMessage(String content, String userIds) {
         BackMessage backMessage = new BackMessage();
         backMessage.setAdminId(userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId());
@@ -359,12 +358,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
+
     public void cancelMessageByMessageId(int messageId) {
         backMessageDao.cancelMessageByMessageId(messageId);
     }
 
-    @Override
+
     public Page<BackMessage> getMessagePageList(PageParameter pageParameter, BackMessage backMessage) {
         Page<BackMessage> backMessagePage = backMessageDao.getMessagePageList(pageParameter, backMessage);
         for (BackMessage oneBackMessage : backMessagePage.getResultList()) {
@@ -373,24 +372,24 @@ public class UserServiceImpl implements UserService {
         return backMessagePage;
     }
 
-    @Override
+
     public List<User> getAllInUseUsers() {
         return userDao.getAllUsersByInUse(DictConstant.IN_USE);
     }
 
-    @Override
+
     public void delMessage(int messageId) {
         backMessageDao.delMessageByMessageId(messageId);
     }
 
-    @Override
+
     public BackMessage getMessageInfo(int messageId) {
         BackMessage backMessage = backMessageDao.getMessageInfoByMessageId(messageId);
         backMessage.setUserName(userDao.findUserAllInfoById(backMessage.getUserId()).getUserName());
         return backMessage;
     }
 
-    @Override
+
     public void transMessage(int messageId, String userIds) {
         BackMessage backMessage = backMessageDao.getMessageInfoByMessageId(messageId);
         backMessage.setAdminId(userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId());
@@ -402,20 +401,20 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
+
     public void changePassword(String password) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         userDao.changePassword(userId, password);
     }
 
-    @Override
+
     public boolean checkOldPassword(String password) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         return userDao.findUserAllInfoById(userId).getPassword().equals(password);
     }
 
 
-    @Override
+
     public void sendDiscuss(PublicDiscusses publicDiscusses) {
         if (!publicScormDao.isInTimeByPublicId(publicDiscusses.getPublicId())) {
             return;
@@ -426,7 +425,7 @@ public class UserServiceImpl implements UserService {
         publicDiscussesDao.addPublicDiscusses(publicDiscusses);
     }
 
-    @Override
+
     public List<PublicDiscusses> getPublicDiscusses(PublicDiscusses publicDiscusses) {
         if (publicScormDao.isInTimeByPublicId(publicDiscusses.getPublicId())) {
             return publicDiscussesDao.getInlineDiscussesByPublicIdAndDiscussId(publicDiscusses);
@@ -434,27 +433,27 @@ public class UserServiceImpl implements UserService {
         return new ArrayList<PublicDiscusses>();
     }
 
-    @Override
+
     public Page<PublicDiscusses> listAllPublicDiscuss(PageParameter pageParameter, PublicDiscusses publicDiscusses) {
         return publicDiscussesDao.listAllPublicDiscuss(pageParameter, publicDiscusses);
     }
 
-    @Override
+
     public void delDiscuss(int discussId) {
         publicDiscussesDao.delDiscussByDiscussId(discussId);
     }
 
-    @Override
+
     public Page<UserQuestion> listAllQuestion(PageParameter pageParameter, UserQuestion userQuestion) {
         return userQuestionDao.listAllQuestion(pageParameter, userQuestion);
     }
 
-    @Override
+
     public void delQuestion(int questionId) {
         userQuestionDao.delQuestionByQuestionId(questionId);
     }
 
-    @Override
+
     public void lookQuestionInfo(HttpServletRequest request, int questionId) {
         UserQuestion userQuestion = userQuestionDao.getQuestionInfoByQuestionId(questionId);
         User askUser = userDao.findUserAllInfoById(userQuestion.getAskUserId());
@@ -464,7 +463,7 @@ public class UserServiceImpl implements UserService {
         request.setAttribute("answerUser", answerUser);
     }
 
-    @Override
+
     public void getUserAdminInfo(HttpServletRequest request, int userId) {
         request.setAttribute("user", userDao.findUserAllInfoById(userId));
         request.setAttribute("labels", labelDao.getLabelsByUserId(userId));
@@ -474,13 +473,13 @@ public class UserServiceImpl implements UserService {
         request.setAttribute("askQuestion", userQuestionDao.getUserAskQuestionsByAnswerUserId(userId));
     }
 
-    @Override
+
     public Page getAnnouncementPageList(PageParameter pageParameter, BackAnnouncement backAnnouncement) {
         Page<BackAnnouncement> backAnnouncementPage = backAnnouncementDao.getAnnouncementPageList(pageParameter, backAnnouncement);
         return backAnnouncementPage;
     }
 
-    @Override
+
     public void addAnnouncement(BackAnnouncement backAnnouncement) {
         backAnnouncement.setAdminId(userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId());
         backAnnouncement.setDate(DateUtil.getCurrentTimestamp().toString().substring(0, 16));
@@ -488,24 +487,24 @@ public class UserServiceImpl implements UserService {
         backAnnouncementDao.addBackAnnouncement(backAnnouncement);
     }
 
-    @Override
+
     public void delAnnouncement(int announcementId) {
         backAnnouncementDao.delAnnouncementById(announcementId);
     }
 
-    @Override
+
     public BackAnnouncement getAnnouncementInfo(int announcementId) {
         BackAnnouncement backAnnouncement = backAnnouncementDao.getAnnouncementById(announcementId);
         return backAnnouncement;
     }
 
-    @Override
+
     public void editAnnouncement(BackAnnouncement backAnnouncement) {
         backAnnouncement.setAdminId(userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId());
         backAnnouncementDao.editAnnouncement(backAnnouncement);
     }
 
-    @Override
+
     public Boolean forgetChangePassword(int userId, String password, String key) {
         if (changePasswordDao.findInUseItemByUserIdAndKey(userId, key).size() < 1) {
             return false;
@@ -515,29 +514,29 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    @Override
+
     public void cancelSendAnnouncement(int announcementId) {
         backAnnouncementDao.cancelSendAnnouncement(announcementId);
     }
 
-    @Override
+
     public void sendAnnouncement(int announcementId) {
         backAnnouncementDao.setOtherAnnouncementNoUse();
         backAnnouncementDao.sendAnnouncement(announcementId);
     }
 
-    @Override
+
     public int addCalendarEvent(int userId, CalendarEvent calendarEvent) {
         calendarEvent.setUserId(userId);
         return userDao.addCalendarEvent(calendarEvent);
     }
 
-    @Override
+
     public List<CalendarEvent> getAllCalendarEventsByUserId(int userId) {
         return userDao.getAllCalendarEventsByUserId(userId);
     }
 
-    @Override
+
     public void delCalendarEventByCalendarId(int calendarId) {
         userDao.delCalendarEventByCalendarId(calendarId);
     }

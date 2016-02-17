@@ -20,17 +20,14 @@ public class DictServiceImpl implements DictService {
     @Autowired
     private DictDao dictDao;
 
-    @Override
     public Page<DictDefine> findDictDefinePageList(PageParameter pageParameter, DictDefine dictDefine) {
         return dictDao.findDictDefinePageList(pageParameter, dictDefine);
     }
 
-    @Override
     public void addDictDefine(DictDefine dictDefine) {
         dictDao.addDictDefine(dictDefine);
     }
 
-    @Override
     public void editDictDefine(DictDefine dictDefine, String oldDictName) {
         dictDao.delDictDefine(oldDictName);
         dictDao.addDictDefine(dictDefine);
@@ -38,7 +35,6 @@ public class DictServiceImpl implements DictService {
         dictDao.changeDictNameOfDictValues(dictDefine);
     }
 
-    @Override
     public void delDictDefine(String dictName) {
         dictDao.delDictDefine(dictName);
         List<DictValues> dictValuesList = dictDao.findDictValuesByDictName(dictName);
@@ -47,59 +43,48 @@ public class DictServiceImpl implements DictService {
         }
     }
 
-    @Override
     public DictDefine findDictDefineByDictName(String dictName) {
         return dictDao.findDictDefineByDictName(dictName);
     }
 
-    @Override
     public Boolean checkRepeatDictDefineName(String dictName, String oldDictName) {
         Boolean notHasRepeatName = dictDao.checkRepeatDictDefineName(dictName);
         Boolean notEquOldName = !(dictName.equals(oldDictName));
         return !(!notHasRepeatName && notEquOldName);
     }
 
-    @Override
     public Page<DictValues> findDictValuesPageList(PageParameter pageParameter, DictValues dictValues) {
         return dictDao.findDictValuesPageList(pageParameter, dictValues);
     }
 
-    @Override
     public void addDictValues(DictValues dictValues) {
         dictDao.addDictValues(dictValues);
     }
 
-    @Override
     public void editDictValues(DictValues dictValues) {
         dictDao.editDictValues(dictValues);
     }
 
-    @Override
     public void delDictValues(DictValues dictValues) {
         dictDao.delDictValues(dictValues);
     }
 
-    @Override
     public DictValues findDictValuesByNameAndCode(DictValues dictValues) {
         return dictDao.findDictValuesByNameAndCode(dictValues);
     }
 
-    @Override
     public DictValues findDictValuesByNameAndValue(DictValues dictValues) {
         return dictDao.findDictValuesByNameAndValue(dictValues);
     }
 
-    @Override
     public Boolean checkRepeatDictValuesCode(DictValues dictValues) {
         return dictDao.checkRepeatDictValuesCode(dictValues);
     }
 
-    @Override
     public List<DictDefine> findAllDictDefine() {
         return dictDao.findAllDictDefine();
     }
 
-    @Override
     public List<DictValues> findAllDictValues() {
         return dictDao.findAllDictValues();
     }

@@ -15,14 +15,11 @@ import com.sls.util.StringUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.mail.*;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
@@ -152,7 +149,6 @@ public class LoginServiceImpl implements LoginService {
         session.setAttribute("calendarEvents", userDao.getPromptCalendarEvents(userId, dateFormat.format(date)));
     }
 
-    @Override
     public Boolean sendPasswordEmail(String email, String basePath) {
         List<User> userList = userDao.findInUseUserByEmail(email);
         if (userList.size() < 1) {

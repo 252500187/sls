@@ -69,13 +69,11 @@ public class ScormServiceImpl implements ScormService {
     @Autowired
     private ScormRecordDao scormRecordDao;
 
-    @Override
     public void getUpScormGroupsByUserId(HttpServletRequest request) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         request.setAttribute("groupsScorm", groupDao.getUpScormGroupsByUserId(userId));
     }
 
-    @Override
     public int upScorm(HttpServletRequest request, String upFile, String upImg, Scorm scorm, int groupId) throws ServletException, IOException, ParserConfigurationException, SAXException,
             XPathExpressionException {
         try {
@@ -115,7 +113,6 @@ public class ScormServiceImpl implements ScormService {
         }
     }
 
-    @Override
     public void registerScorm(int scormId, HttpServletRequest request) {
         User user = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0);
         //校验防止重复注册和注册不可使用课件
@@ -150,7 +147,6 @@ public class ScormServiceImpl implements ScormService {
         userAttentionDao.countNewMessageByAttentionUserId(user.getUserId());
     }
 
-    @Override
     public void collectDealScorm(int scormId, HttpServletRequest request) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         int scormState = scormDao.findScormInfoByScormId(scormId).getInUse();
@@ -168,7 +164,6 @@ public class ScormServiceImpl implements ScormService {
         noteCollectDao.addCollectScorm(collect);
     }
 
-    @Override
     public void addStudyNote(StudyNote studyNote) {
         if (("").equals(studyNote.getNote())) {
             return;
@@ -180,7 +175,6 @@ public class ScormServiceImpl implements ScormService {
         noteCollectDao.addStudyNote(studyNote);
     }
 
-    @Override
     public void getAllStudyNotesByScormIdAndUserId(int scormId, HttpServletRequest request) {
         if ("".equals(LoginUserUtil.getLoginName())) {
             return;
@@ -196,12 +190,10 @@ public class ScormServiceImpl implements ScormService {
         request.setAttribute("scormId", scormId);
     }
 
-    @Override
     public void delNote(int noteId) {
         noteCollectDao.delNoteByNoteId(noteId);
     }
 
-    @Override
     public void upStudyImg(HttpServletRequest request, String upImg, StudyNote studyNote) throws ServletException, IOException {
         FileUp fileUp = new FileUp();
         Date date = new Date();
@@ -213,7 +205,6 @@ public class ScormServiceImpl implements ScormService {
         noteCollectDao.addStudyNote(studyNote);
     }
 
-    @Override
     public void studyScorm(int scormId, HttpServletRequest request) {
         Scorm scorm = scormDao.findScormInfoByScormId(scormId);
         if (scorm.getInUse() == DictConstant.NO_USE) {
@@ -224,7 +215,6 @@ public class ScormServiceImpl implements ScormService {
         request.setAttribute("publicScorm", !publicScormDao.getInTimePublicScormByScormId(scormId).isEmpty());
     }
 
-    @Override
     public void setScormSummarizeInfo(int scormId) {
         ScormSummarize scormSummarize = new ScormSummarize();
         scormSummarize.setLastVisitTime(DateUtil.getSystemDate("yyyy-MM-dd HH:mm:ss"));
@@ -233,7 +223,6 @@ public class ScormServiceImpl implements ScormService {
         summarizeDao.changeLastVisitTimeByScormIdAndUserId(scormSummarize);
     }
 
-    @Override
     public void studyScormZtree(int scormId, HttpServletRequest request) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         List<Sco> scoList = scoDao.findScosByScormIdAndUserId(scormId, userId);
@@ -244,7 +233,6 @@ public class ScormServiceImpl implements ScormService {
         request.setAttribute("isLast", DictConstant.LAST_VISIT);
     }
 
-    @Override
     public void changeScoState(int scormId, int scoId) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         //改变最后访问SCO
@@ -277,12 +265,10 @@ public class ScormServiceImpl implements ScormService {
         }
     }
 
-    @Override
     public List<ScoInfo> getScoApiInfo(int scoId) {
         return scoDao.getScoApiInfoByScoId(scoId);
     }
 
-    @Override
     public void commitScoApiInfoByScoId(ScoInfo scoInfo, int scormId) {
         //获取本次学习时间，分别加入课件总学习时间和这个SCO总学习时间
         String sessionTime = scoInfo.getCoreSessionTime();
@@ -293,7 +279,7 @@ public class ScormServiceImpl implements ScormService {
             scormDao.changeTotalTimeByScormId(scormId, DateUtil.getTotalTime(sessionTime, scormDao.findScormInfoByScormId(scormId).getTotalTime()));
         }
         //处理SCO的学习状态,测试和非测试
-        if (scoInfo.getCoreCredit() == DictConstant.CREDIT_IM) {
+        if (scoInfo.getCoreCredit().equals(DictConstant.CREDIT_IM)) {
             if (("").equals(scoInfo.getCoreLessonStatus())) {
                 scoInfo.setCoreLessonStatus(DictConstant.LESSON_STATUS_FAILED);
                 int score = 0;
@@ -391,7 +377,6 @@ public class ScormServiceImpl implements ScormService {
         return scorms;
     }
 
-    @Override
     public void getAllAboutScormInfo(int scormId, HttpServletRequest request) {
         Scorm scormInfo = scormDao.findScormInfoByScormId(scormId);
         if (scormInfo.getInUse() == DictConstant.NO_USE) {
@@ -439,7 +424,6 @@ public class ScormServiceImpl implements ScormService {
         request.setAttribute("scoList", scoList);
     }
 
-    @Override
     public void getScormOperate(int scormId, HttpServletRequest request) {
         boolean showCollect = false;
         boolean showDiscussInput = false;
@@ -475,12 +459,11 @@ public class ScormServiceImpl implements ScormService {
         request.setAttribute("publicScorm", !publicScormDao.getInTimePublicScormByScormId(scormId).isEmpty());
     }
 
-    @Override
     public Page<Scorm> listNotAuditScormPageList(PageParameter pageParameter, Scorm scorm) {
         return scormDao.listNotAuditScormPageList(pageParameter, scorm);
     }
 
-    @Override
+
     public Page<Scorm> listAuditScormPageList(PageParameter pageParameter, Scorm scorm) {
         Page<Scorm> scormPage = scormDao.listAuditScormPageList(pageParameter, scorm);
         String totalTime;
@@ -497,7 +480,6 @@ public class ScormServiceImpl implements ScormService {
         return scormPage;
     }
 
-    @Override
     public void checkScormInfo(HttpServletRequest request, int scormId) {
         Scorm scorm = scormDao.findScormInfoByScormId(scormId);
         scorm.setShowRecommendLevel(dictService.changeDictCodeToValue(scorm.getRecommendLevel(), DictConstant.RECOMMEND));
@@ -511,7 +493,6 @@ public class ScormServiceImpl implements ScormService {
         request.setAttribute("inUse", DictConstant.IN_USE);
     }
 
-    @Override
     public void changeScormInUse(int scormId, int isUse) {
         String date = DateUtil.getSystemDate("yyyy-MM-dd");
         if (isUse == DictConstant.IN_USE) {
@@ -524,18 +505,15 @@ public class ScormServiceImpl implements ScormService {
         scormDao.changeScormInUse(scormId, isUse, date);
     }
 
-    @Override
     public String changeScormRecommend(int scormId, int recommend) {
         scormDao.changeScormRecommend(scormId, recommend);
         return dictService.changeDictCodeToValue(recommend, DictConstant.RECOMMEND);
     }
 
-    @Override
     public void changScormCompleteWay(int scormId, int completeWay) {
         scormDao.changScormCompleteWayByScormId(scormId, completeWay);
     }
 
-    @Override
     public Boolean evaluateScorm(ScormSummarize scormSummarize) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         scormSummarize.setUserId(userId);
@@ -551,7 +529,6 @@ public class ScormServiceImpl implements ScormService {
         return true;
     }
 
-    @Override
     public void getComments(int scormId, HttpServletRequest request) {
         request.setAttribute("allComments", summarizeDao.getAllCommentsByScormId(scormId));
         if (!("").equals(LoginUserUtil.getLoginName())) {
@@ -559,7 +536,6 @@ public class ScormServiceImpl implements ScormService {
         }
     }
 
-    @Override
     public void discussScorm(ScormSummarize scormSummarize) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         if (("").equals(summarizeDao.findScormSummarizeByUserIdAndScormId(userId, scormSummarize.getScormId()).get(0).getDiscussDate())) {
@@ -570,7 +546,6 @@ public class ScormServiceImpl implements ScormService {
         summarizeDao.discussScorm(scormSummarize);
     }
 
-    @Override
     public void getSummarizeInfo(int scormId, HttpServletRequest request) {
         if ("".equals(LoginUserUtil.getLoginName())) {
             return;
@@ -587,7 +562,6 @@ public class ScormServiceImpl implements ScormService {
         request.setAttribute("records", scormRecordDao.getRecordListByUserIdAndScormId(userId, scormId));
     }
 
-    @Override
     public void findResult(String info, HttpServletRequest request) {
         request.setAttribute("info", info);
         request.setAttribute("findNameScorm", scormDao.queryScormByFieldName(info, "scorm_name"));
@@ -595,7 +569,6 @@ public class ScormServiceImpl implements ScormService {
         request.setAttribute("findUsers", userDao.queryUsersByName(info));
     }
 
-    @Override
     public void findRecommendScorm(HttpServletRequest request) {
         List<Label> labelList;
         StringBuilder labelName = new StringBuilder();
@@ -610,14 +583,13 @@ public class ScormServiceImpl implements ScormService {
             scorm.setShowRecommendLevel(dictService.changeDictCodeToValue(scorm.getRecommendLevel(), DictConstant.RECOMMEND));
             labelList = labelDao.getLabelByScormId(scorm.getScormId());
             for (Label label : labelList) {
-                labelName.append(label.getLabelName() + "、");
+                labelName.append(label.getLabelName()).append("、");
             }
             scorm.setLabelName(labelName.toString());
         }
         request.setAttribute("recommendScorm", scormList);
     }
 
-    @Override
     public void findRegisterScorm(HttpServletRequest request) {
         if (!"".equals(LoginUserUtil.getLoginName())) {
             int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
@@ -625,7 +597,6 @@ public class ScormServiceImpl implements ScormService {
         }
     }
 
-    @Override
     public void findReviewsByScormId(int scormId, HttpServletRequest request) {
         User user = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0);
         int myEvaluateScore = summarizeDao.findScormSummarizeByUserIdAndScormId(user.getUserId(), scormId).get(0).getScore();
@@ -635,31 +606,26 @@ public class ScormServiceImpl implements ScormService {
         request.setAttribute("myEvaluateScore", myEvaluateScore);
     }
 
-    @Override
     public void getAllRegisterUsers(int scormId, HttpServletRequest request) {
         request.setAttribute("registerUsers", summarizeDao.getAllRegisterUsersByScormId(scormId));
     }
 
-    @Override
     public void getUserUpScormsByScormId(int scormId, HttpServletRequest request) {
         int userId = scormDao.findScormInfoByScormId(scormId).getUploadUserId();
         List<Scorm> scorms = scormDao.getInUseUpScormInfoByUserId(userId);
         request.setAttribute("otherScorms", changeScormListRecommendLevel(scorms));
     }
 
-    @Override
     public List<Scorm> getRegisterScormsByUserId(int userId) {
         List<Scorm> scorms = scormDao.findRegisterScormByUserId(userId);
         return changeScormListRecommendLevel(scorms);
     }
 
-    @Override
     public List<Scorm> getUpScormsByUserId(int userId) {
         List<Scorm> scorms = scormDao.getInUseUpScormInfoByUserId(userId);
         return changeScormListRecommendLevel(scorms);
     }
 
-    @Override
     public void sortScorm(int labelId, HttpServletRequest request) {
         if (labelId == 0) {
             request.setAttribute("sortName", "全部课件");
@@ -670,27 +636,22 @@ public class ScormServiceImpl implements ScormService {
         request.setAttribute("sortLabelScorm", changeScormListRecommendLevel(scormList));
     }
 
-    @Override
     public Page<PublicScorm> listAllPublicScormPageList(PageParameter pageParameter, PublicScorm publicScorm) {
         return publicScormDao.listAllPublicScormPageList(pageParameter, publicScorm);
     }
 
-    @Override
     public void delPublicScorm(int publicId) {
         publicScormDao.delPublicScormByPublicId(publicId);
     }
 
-    @Override
     public List<Scorm> getAllInUseScorm() {
         return scormDao.getAllScormByInUse(DictConstant.IN_USE);
     }
 
-    @Override
     public void addPublicScorm(PublicScorm publicScorm) {
         publicScormDao.addPublicScorm(publicScorm);
     }
 
-    @Override
     public void getPublicScormInfo(int scormId, HttpServletRequest request) {
         PublicScorm publicScorm = publicScormDao.getInTimePublicScormByScormId(scormId).get(0);
         String nowTime = DateUtil.getSystemDate("yyyy-MM-dd HH:mm:ss");
@@ -704,13 +665,11 @@ public class ScormServiceImpl implements ScormService {
         }
     }
 
-    @Override
     public void getScormGroupsByScormId(int scormId, HttpServletRequest request) {
         List<Scorm> scormList = groupDao.getGroupScormsByScormId(scormId);
         request.setAttribute("groupScorms", changeScormListRecommendLevel(scormList));
     }
 
-    @Override
     public List<Scorm> findGroupsScorm() {
         List<Scorm> groups = groupDao.findGroupScormsByNum(10);
         List<Scorm> useGroups = new ArrayList<Scorm>();
@@ -723,12 +682,10 @@ public class ScormServiceImpl implements ScormService {
         return useGroups;
     }
 
-    @Override
     public List<Scorm> findLatestScormsByNum(int num) {
         return scormDao.findLatestScormsByNum(num);
     }
 
-    @Override
     public List<Scorm> getGroupScorms(int groupId) {
         return groupDao.getGroupScormsByGroupId(groupId);
     }

@@ -16,7 +16,6 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleDao roleDao;
 
-    @Override
     public Page<Role> listRolePageList(PageParameter pageParameter, Role role) {
         return roleDao.findRolePageList(pageParameter, role);
     }

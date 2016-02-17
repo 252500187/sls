@@ -1,6 +1,7 @@
 package com.sls.util;
 
 public class DictConstant {
+
     private DictConstant() {
     }
 

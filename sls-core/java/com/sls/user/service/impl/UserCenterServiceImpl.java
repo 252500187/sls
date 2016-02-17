@@ -42,14 +42,12 @@ public class UserCenterServiceImpl implements UserCenterService {
     @Autowired
     private ScormRecordDao scormRecordDao;
 
-    @Override
     public void toUserCenter(HttpServletRequest request) {
         User user = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0);
         user.setLevelName(userDao.findUserLevelNameByScore(user.getScore()).getLevelName());
         request.setAttribute("user", user);
     }
 
-    @Override
     public void selectModule(HttpServletRequest request, int module) {
         String centerUrl = new String();
         switch (module) {
@@ -111,28 +109,24 @@ public class UserCenterServiceImpl implements UserCenterService {
         request.setAttribute("centerUrl", centerUrl);
     }
 
-    @Override
     public void toUserInfo(HttpServletRequest request) {
         User user = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0);
         user.setLevelName(userDao.findUserLevelNameByScore(user.getScore()).getLevelName());
         request.setAttribute("user", user);
     }
 
-    @Override
     public void getAllRegisterScormInfo(HttpServletRequest request) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         List<Scorm> scormList = scormDao.getAllRegisterScormInfoByUserId(userId);
         request.setAttribute("allScorm", scormList);
     }
 
-    @Override
     public void getAllCollectScormInfo(HttpServletRequest request) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         List<Scorm> scormList = scormDao.getAllCollectScormInfoByUserId(userId);
         request.setAttribute("allScorm", scormList);
     }
 
-    @Override
     public void getAllUpScormInfo(HttpServletRequest request) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         List<Scorm> scormList = scormDao.getInUseUpScormInfoByUserId(userId);
@@ -142,19 +136,16 @@ public class UserCenterServiceImpl implements UserCenterService {
         request.setAttribute("allScorm", scormList);
     }
 
-    @Override
     public void getAskQuestions(HttpServletRequest request) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         request.setAttribute("questions", userQuestionDao.getAskQuestionsByAskUserId(userId));
     }
 
-    @Override
     public void getUserQuestions(HttpServletRequest request) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         request.setAttribute("questions", userQuestionDao.getUserQuestionsByAskUserId(userId));
     }
 
-    @Override
     public void getQuestionInfoAsk(HttpServletRequest request, HttpSession session, int questionId) {
         UserQuestion userQuestion = userQuestionDao.getQuestionInfoByQuestionId(questionId);
         User user = userDao.findUserAllInfoById(userQuestion.getAnswerUserId());
@@ -165,7 +156,6 @@ public class UserCenterServiceImpl implements UserCenterService {
         session.setAttribute("answerNum", userQuestionDao.getNewAnswerNumByUserId(userQuestion.getAskUserId()) - 1);
     }
 
-    @Override
     public void changeQuestionAskContent(UserQuestion userQuestion) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         UserQuestion oldUserQuestion = userQuestionDao.getQuestionInfoByQuestionId(userQuestion.getQuestionId());
@@ -175,7 +165,6 @@ public class UserCenterServiceImpl implements UserCenterService {
         }
     }
 
-    @Override
     public void getQuestionInfoAnswer(HttpServletRequest request, HttpSession session, int questionId) {
         UserQuestion userQuestion = userQuestionDao.getQuestionInfoByQuestionId(questionId);
         User user = userDao.findUserAllInfoById(userQuestion.getAskUserId());
@@ -187,7 +176,6 @@ public class UserCenterServiceImpl implements UserCenterService {
     }
 
 
-    @Override
     public void changeQuestionAnswerContent(UserQuestion userQuestion) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         UserQuestion oldUserQuestion = userQuestionDao.getQuestionInfoByQuestionId(userQuestion.getQuestionId());
@@ -197,23 +185,19 @@ public class UserCenterServiceImpl implements UserCenterService {
         }
     }
 
-    @Override
     public void cancelNewAnswerByQuestionId(int questionId) {
         userQuestionDao.cancelNewAnswerByQuestionId(questionId);
     }
 
-    @Override
     public void cancelNewAskByQuestionId(int questionId) {
         userQuestionDao.cancelNewAskByQuestionId(questionId);
     }
 
-    @Override
     public List<UserAttention> getAttentionUsers() {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         return userAttentionDao.getAttentionUsersByUserId(userId);
     }
 
-    @Override
     public void getRecordInfo(HttpServletRequest request, int scormId) {
         int userId = userDao.findInUseUserByLoginName(LoginUserUtil.getLoginName()).get(0).getUserId();
         request.setAttribute("records", scormRecordDao.getRecordListByUserIdAndScormId(userId, scormId));
