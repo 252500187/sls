@@ -15,7 +15,7 @@
 
 <body class="login">
 <div class="logo">
-    <a onclick="window.location.href='/sls/'">
+    <a onclick="window.location.href='/'">
         <img src="img/logo/logo-big.png" alt="SLS"/>
     </a>
 </div>
@@ -72,7 +72,7 @@
             <h4>去首页看看</h4>
             <ul class="social-icons">
                 <li>
-                    <a class="scorm" data-original-title="scorm" onclick="window.location.href='/sls/'">
+                    <a class="scorm" data-original-title="scorm" onclick="window.location.href='/'">
                     </a>
                 </li>
             </ul>
